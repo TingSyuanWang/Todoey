@@ -14,6 +14,8 @@ class CategoryViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadCategories()
     }
     
     // Mark: Tableview Datasource Methods
@@ -32,7 +34,7 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadItems(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
         do {
             categories = try context.fetch(request)
         } catch {
@@ -47,7 +49,7 @@ class CategoryViewController: UITableViewController {
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
-        let alert = UIAlertController(title: "Add new todoey category", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add new category", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Category", style: .default) { action in
             // what will happen once the user clickes the add Item Button
             let newCategory = Category(context: self.context)
@@ -58,20 +60,20 @@ class CategoryViewController: UITableViewController {
             self.tableView.reloadData()
         }
         
+        alert.addAction(action)
+        
         alert.addTextField { alertTextField in
-            alertTextField.placeholder = "create new category"
+            alertTextField.placeholder = "Add a new category"
             textField = alertTextField
         }
         
-        alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
     
     // Mark: Tableview Delegate Methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        let category = categories[indexPath.row]
-        cell.textLabel?.text = category.name
+        cell.textLabel?.text = categories[indexPath.row].name
         
         return cell
     }
