@@ -20,6 +20,7 @@ class CategoryViewController: SwipeTableViewController {
         loadCategories()
         
         tableView.rowHeight = 80
+        tableView.separatorStyle = .none
     }
     
     // Mark: Tableview Datasource Methods
@@ -33,6 +34,8 @@ class CategoryViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Category Added yet"
+        
+        cell.backgroundColor = UIColor(hue: CGFloat(categories?[indexPath.row].color ?? 0), saturation: 1, brightness: 1, alpha: 1)
         
         return cell
     }
@@ -95,6 +98,7 @@ class CategoryViewController: SwipeTableViewController {
             // what will happen once the user clickes the add Item Button
             let newCategory = Category()
             newCategory.name = textField.text!
+            newCategory.color = drand48()
             self.saveCategories(category: newCategory)
             
             self.tableView.reloadData()
